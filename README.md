@@ -1,119 +1,111 @@
-# OS-EX.8-IMPLEMENTATION-OF-BANKER-S-ALGORITHM
+# OS-EX.10-IMPLEMENTATION-OF-PAGE-REPLACEMENT-ALGORITHMS
 
 # AIM
 
-To write a C program to implement Bankers Algorithm.
+To write a C program to implement Page Replacement technique using LRU.
 
 # ALGORITHM
 
-1: Get the no of processes.
+1. Start the program
 
-2: Get the process numbers.
+2. Get the number of pages and their sequence from theuser
 
-3: Get the no of resources types and instances of it.
+3. Get the number of available page frames from theuser.
 
-4: Get Max demand of each process of n x m matrices.
+4. In LRU replace the page that has not been used for the longest period oftime.
 
-5: Get the n x m matrices the number of resources of each type currently allocated to each process.
+5. Compare all frames with incoming page-
 
+6. If the incoming page is already available in page frame, set the match flag to indicate ‘no need of page replacement’.
 
-6: Calculate the n x m of the remaining resource need of each process.
+7. If the incoming page is not available in all frames, then remove the page which has not been used for the longest period oftime.
 
-7: Initialize work as available resource and array of finish to false.
+8. Increment the ‘number of Page faults’ counter
 
-8: Check the Needed resource is lesser than the available resource if not display the System not in safe state and if it is lesser than system in safe state.
+9. Print the number of page faults.
 
-9: Initialize work as sum of work and allocation, check if array of finish is true go to step 7 again if not go to step 8.
-
-10: Check that request can be immediately granted.
-
-11: If single request is lesser than or equal to available if true means arrive to new state.
-
-12: Print the sequence if it is in safe state or print not in safe state.
-
+10. Stop the program.
+ 
 # PROGRAM
 ```
-#include <stdio.h>
-int main()
+#include<stdio.h>
+main()
 {
-
-	int n, m, i, j, k;
-	n = 5; // Number of processes
-	m = 3; // 
-	int alloc[5][3] = { { 0, 1, 0 }, // P0 // Allocation Matrix
-						{ 2, 0, 0 }, // P1
-						{ 3, 0, 2 }, // P2
-						{ 2, 1, 1 }, // P3
-						{ 0, 0, 2 } }; // P4
-
-	int max[5][3] = { { 7, 5, 3 }, // P0 // MAX Matrix
-					{ 3, 2, 2 }, // P1
-					{ 9, 0, 2 }, // P2
-					{ 2, 2, 2 }, // P3
-					{ 4, 3, 3 } }; // P4
-
-	int avail[3] = { 3, 3, 2 }; // Available Resources
-
-	int f[n], ans[n], ind = 0;
-	for (k = 0; k < n; k++) {
-		f[k] = 0;
-	}
-	int need[n][m];
-	for (i = 0; i < n; i++) {
-		for (j = 0; j < m; j++)
-			need[i][j] = max[i][j] - alloc[i][j];
-	}
-	int y = 0;
-	for (k = 0; k < 5; k++) {
-		for (i = 0; i < n; i++) {
-			if (f[i] == 0) {
-
-				int flag = 0;
-				for (j = 0; j < m; j++) {
-					if (need[i][j] > avail[j]){
-						flag = 1;
-						break;
-					}
-				}
-
-				if (flag == 0) {
-					ans[ind++] = i;
-					for (y = 0; y < m; y++)
-						avail[y] += alloc[i][y];
-					f[i] = 1;
-				}
-			}
-		}
-	}
-
-	int flag = 1;
-	
-	for(int i=0;i<n;i++)
-	{
-	if(f[i]==0)
-	{
-		flag=0;
-		printf("The following system is not safe");
-		break;
-	}
-	}
-	
-	if(flag==1)
-	{
-	printf("Following is the SAFE Sequence\n");
-	for (i = 0; i < n - 1; i++)
-		printf(" P%d ->", ans[i]);
-	printf(" P%d", ans[n - 1]);
-	}
-	
-
-	return (0);
+int q[20],p[50],c=0,c1,d,f,i,j,k=0,n,r,t,b[20],c2[20];
+printf("Enter no of pages: \n");
+scanf("%d",&n);
+printf("Enter the reference string: \n");
+for(i=0;i<n;i++)
+scanf("%d",&p[i]);
+printf("Enter no of frames: \n");
+scanf("%d",&f);
+q[k]=p[k];
+printf("\t\n\t %d\n",q[k]);
+c++;
+k++;
+for(i=1;i<n;i++)
+{
+c1=0;
+for(j=0;j<f;j++)
+{
+if(p[i]!=q[j])
+c1++;
+}
+if(c1==f)
+{
+c++;
+if(k<f)
+{
+q[k]=p[i];
+k++;
+for(j=0;j<k;j++)
+printf("\t%d",q[j]);
+printf("\n");
+}
+else
+{
+for(r=0;r<f;r++)
+{
+c2[r]=0;
+for(j=i-1;j<n;j--)
+{
+if(q[r]!=p[j])
+c2[r]++;
+else
+break;
+}
+}
+for(r=0;r<f;r++)
+b[r]=c2[r];
+for(r=0;r<f;r++)
+{
+for(j=r;j<f;j++)
+{
+if(b[r]<b[j])
+{
+t=b[r];
+b[r]=b[j];
+b[j]=t;
+}
+}
+}
+for(r=0;r<f;r++)
+{
+if(c2[r]==b[0])
+q[r]=p[i];
+printf("\t%d",q[r]);
+}
+printf("\n");
+}
+}
+}
+printf("\nThe no of page faults is %d",c);
 }
 ```
 # OUTPUT
 
-![image](https://github.com/Harsayazheni/OS-EX.8-IMPLEMENTATION-OF-BANKER-S-ALGORITHM/assets/118708467/16bca875-09fd-4ea8-8399-03df2cfefea2)
+![image](https://github.com/Harsayazheni/OS-EX.10-IMPLEMENTATION-OF-PAGE-REPLACEMENT-ALGORITHMS/assets/118708467/9fa37a87-d705-4244-be91-9d02cfd2cba6)
 
 # RESULT
 
-Thus, implement Bankers Algorithm to avoid Deadlock is implemented successfully using C program.
+Thus the implementation of LRU page replacement is successfully executed.
